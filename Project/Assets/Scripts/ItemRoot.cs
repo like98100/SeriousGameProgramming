@@ -32,7 +32,7 @@ public class ItemRoot : MonoBehaviour
 
     public static float[] RESPAWN_TIME_ENEMY = new float[3] { 5.0f, 3.0f, 3.0f }; // 적 출현 시간 상수.
 
-    public static float[] RESPAWN_TIME_TORNADO = new float[3] { 300.0f, 10.0f, 15.0f};  //토네이도 출현 시간 상수
+    public static float[] RESPAWN_TIME_TORNADO = new float[3] { 300.0f, 7.5f, 10.0f};  //토네이도 출현 시간 상수
 
     private float respawn_timer_apple = 0.0f; // 사과의 출현 시간.
     private float respawn_timer_iron = 0.0f; // 철광석의 출현 시간. 

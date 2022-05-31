@@ -6,18 +6,45 @@ public class Menual : MonoBehaviour
 {
     float time;
     bool isMenual = false;
-    GameObject menual;
+    GameObject menual, menualArray;
+    int flag;
 
     // Start is called before the first frame update
     void Start()
     {
         menual = GameObject.Find("Canvas/MenualImage");
+        menualArray = GameObject.Find("Canvas/MenualImage/MenualArray");
         menual.transform.localScale = new Vector3(0, 0, 0);
+
+        flag = 0;
+        SetMenualArray();
+    }
+
+    public int GetFlag()
+    {
+        return this.flag;
+    }
+
+    public void SetFlag(bool direction)
+    {
+        if (direction) flag++;
+        else flag--;
+
+        SetMenualArray();
     }
 
     public void SetMenual()
     {
         this.isMenual = !this.isMenual;
+    }
+
+    void SetMenualArray()
+    {
+        for(int idx = 0; idx < 3; idx++)
+        {
+            if(idx == flag) menualArray.transform.GetChild(idx).gameObject.SetActive(true);
+            else menualArray.transform.GetChild(idx).gameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame

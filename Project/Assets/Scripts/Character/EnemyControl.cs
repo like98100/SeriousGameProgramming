@@ -2,11 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.UI;
+
 public class EnemyControl : MonoBehaviour
 {
     public static float ENEMY_MOVED_SPEED = 2.0f;
     public static float SLOW_MOVESPEED = 0.3f; // 이동 속도 감소 퍼센테이지
 
+    float[] Maxhp;
+    public float hp;
+    public GameObject hpbar;
     public enum STEP
     { 
         NONE = -1,  // 정보 없음
@@ -29,7 +34,9 @@ public class EnemyControl : MonoBehaviour
         this.next_step = STEP.MOVE;
 
         target = GameObject.Find("rocket").transform;
-        
+        this.Maxhp = new float[3] { 0.5f, 1.0f, 1.5f };
+        this.hp = Maxhp[GameStatus.stage];
+        hpbar = GameObject.Find("Canvas/" + this.gameObject.name + "HP");
     }
 
     private void moveControl()
@@ -127,5 +134,17 @@ public class EnemyControl : MonoBehaviour
                 this.attackControl();
                 break;
         }
+
+        // Hp Bar Tracking
+        hpbar.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 1.5f, 0));
+        hpbar.transform.GetChild(1).gameObject.GetComponent<Image>().fillAmount = this.hp / this.Maxhp[GameStatus.stage];
+
+        if (this.hp <= 0f)
+        {
+            //GameObject.Find("GameRoot").GetComponent<ItemRoot>().SetEnemyNum(false);
+            Destroy(hpbar);
+            Destroy(this.gameObject);
+        }
+
     }
 }

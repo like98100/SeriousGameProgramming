@@ -18,19 +18,24 @@ public class ItemRoot : MonoBehaviour
     public GameObject applePrefab = null; // Prefab 'Apple'
 
     public GameObject enemyPrefab = null; // Prefab 'Enemy'
+    public GameObject enemyHpBar = null;    // Prefab 'EnemyHP'
     public GameObject tornadoPrefab = null; // Prefab 'Tornado'
+
+    Vector2 hpbarCreatePoint;
+    int enemyNum;
 
     protected List<Vector3> respawn_points; // 출현 지점 List.
 
+    protected List<Vector3> respawnIronPoints;
     protected List<Vector3> respawnEnemyPoints; // 적 출현 지점 List.
     protected List<Vector3> respawnTornadoPoints; // 토네이도 출현 지점 List.
 
     public float step_timer = 0.0f;
     public static float[] RESPAWN_TIME_APPLE = new float[3] { 15.0f, 17.0f, 20.0f }; // 사과 출현 시간 상수.
     public static float[] RESPAWN_TIME_IRON = new float[3] { 10.0f, 10.0f, 12.5f }; // 철광석 출현 시간 상수.
-    public static float[] RESPAWN_TIME_PLANT = new float[3] { 1.0f, 4.0f, 4.0f }; // 식물 출현 시간 상수.
+    public static float[] RESPAWN_TIME_PLANT = new float[3] { 1.0f, 2.5f, 5.0f }; // 식물 출현 시간 상수.
 
-    public static float[] RESPAWN_TIME_ENEMY = new float[3] { 5.0f, 3.0f, 3.0f }; // 적 출현 시간 상수.
+    public static float[] RESPAWN_TIME_ENEMY = new float[3] { 4.0f, 5.0f, 5.5f }; // 적 출현 시간 상수.
 
     public static float[] RESPAWN_TIME_TORNADO = new float[3] { 300.0f, 7.5f, 10.0f};  //토네이도 출현 시간 상수
 
@@ -62,16 +67,21 @@ public class ItemRoot : MonoBehaviour
     // 철광석을 출현시킨다.
     public void respawnIron()
     {
-        // 철광석 프리팹을 인스턴스화.
-        GameObject go = GameObject.Instantiate(this.ironPrefab) as GameObject;
-        // 철광석의 출현 포인트를 취득.
-        Vector3 pos = GameObject.Find("IronRespawn").transform.position;
-        // 출현 위치를 조정.
-        pos.y = 1.0f;
-        pos.x += Random.Range(-1.0f, 1.0f);
-        pos.z += Random.Range(-1.0f, 1.0f);
-        // 철광석의 위치를 이동.
-        go.transform.position = pos;
+        if(this.respawnIronPoints.Count > 0)
+        {
+            // 철광석 프리팹을 인스턴스화.
+            GameObject go = GameObject.Instantiate(this.ironPrefab) as GameObject;
+            // 철광석의 출현 포인트를 랜덤으로 취득.
+            int n = Random.Range(0, this.respawnIronPoints.Count);
+            Vector3 pos = this.respawnIronPoints[n];
+            // 출현 위치를 조정.
+            pos.y = 1.0f;
+            pos.x += Random.Range(-1.0f, 1.0f);
+            pos.z += Random.Range(-1.0f, 1.0f);
+            // 철광석의 위치를 이동.
+            go.transform.position = pos;
+        }
+        
     }
     // 사과를 출현시킨다.
     public void respawnApple()
@@ -113,6 +123,13 @@ public class ItemRoot : MonoBehaviour
         if(this.respawnEnemyPoints.Count > 0)
         {
             GameObject enemy = GameObject.Instantiate(this.enemyPrefab) as GameObject;
+            GameObject enemyHp = GameObject.Instantiate(this.enemyHpBar, hpbarCreatePoint,
+                Quaternion.identity, GameObject.Find("Canvas").transform) as GameObject;
+
+            enemy.name = "Enemy" + enemyNum;
+            enemyHp.name = enemy.name + "HP";
+
+            enemyHp.transform.SetAsFirstSibling();  // 하이어라키 내 가장 위로 올려서 미니맵에 가려지도록 구현
 
             int spawnNum = Random.Range(0, this.respawnEnemyPoints.Count);
             Vector3 pos = this.respawnEnemyPoints[spawnNum];
@@ -122,7 +139,7 @@ public class ItemRoot : MonoBehaviour
             pos.z += Random.Range(-1.0f, 1.0f);
 
             enemy.transform.position = pos;
-
+            enemyNum++;
         }
     }
 
@@ -229,8 +246,16 @@ public class ItemRoot : MonoBehaviour
         return (regain);
     }
 
+    public int GetEnemyNum()
+    {
+        return enemyNum;
+    }
 
-
+    public void SetEnemyNum(bool isAdd)
+    {
+        if (isAdd) enemyNum++;
+        else enemyNum--;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -238,6 +263,10 @@ public class ItemRoot : MonoBehaviour
         this.respawn_points = new List<Vector3>();
         this.respawnEnemyPoints = new List<Vector3>();
         this.respawnTornadoPoints = new List<Vector3>();
+        this.respawnIronPoints = new List<Vector3>();
+
+        hpbarCreatePoint = new Vector2(0, 0);
+        enemyNum = 0;
 
         // "PlantRespawn" 태그가 붙은 모든 오브젝트를 배열에 저장.
         GameObject[] respawns = GameObject.FindGameObjectsWithTag("PlantRespawn");
@@ -257,8 +286,18 @@ public class ItemRoot : MonoBehaviour
         GameObject applerespawn = GameObject.Find("AppleRespawn");
         applerespawn.GetComponent<MeshRenderer>().enabled = false;
         // 철광석의 출현 포인트를 취득하고, 렌더러를 보이지 않게.
-        GameObject ironrespawn = GameObject.Find("IronRespawn");
-        ironrespawn.GetComponent<MeshRenderer>().enabled = false;
+        GameObject[] ironrespawns = GameObject.FindGameObjectsWithTag("IronRespawn");
+
+        foreach(GameObject iron in ironrespawns)
+        {
+            MeshRenderer renderer = iron.GetComponentInChildren<MeshRenderer>();
+            if (renderer != null)    // 렌더러가 존재하면 보이지 않게
+            {
+                renderer.enabled = false;
+            }
+
+            this.respawnIronPoints.Add(iron.transform.position);
+        }
 
         // EnemyRespawn 태그가 붙은 오브젝트들을 배열에 저장
         GameObject[] enemyRespawns = GameObject.FindGameObjectsWithTag("EnemyRespawn");

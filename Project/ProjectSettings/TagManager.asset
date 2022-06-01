@@ -15,6 +15,7 @@ TagManager:
   - EnemyRespawn
   - Tornado
   - TornadoRespawn
+  - IronRespawn
   layers:
   - Default
   - TransparentFX
@@ -51,4 +52,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Minimap
+    uniqueID: 266083059
+    locked: 0
+  - name: HpBar
+    uniqueID: 1044867441
     locked: 0

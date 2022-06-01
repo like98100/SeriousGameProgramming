@@ -49,7 +49,8 @@ public class HitEvent : MonoBehaviour
                         SoundControl.SetSound(hitSound, "MP_Realistic Punch");
 
                         //Debug.Log("적 파티클");
-                        Destroy(other.gameObject);
+                        other.gameObject.GetComponent<EnemyControl>().hp -= 0.5f;
+                        //Destroy(other.gameObject);
                     }
                     break;
                 case "Player":  // 맞은 대상이 플레이어(구현 가능성을 위해 추가함)

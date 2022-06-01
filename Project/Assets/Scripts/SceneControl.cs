@@ -68,7 +68,7 @@ public class SceneControl : MonoBehaviour
                         break;
                 // 클리어 시 및 게임 오버 시의 처리.
                 case STEP.CLEAR:
-                    if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.R))
+                    if (Input.GetKeyDown(KeyCode.Space))
                     {
                         // 마우스 버튼이 눌렸으면 다음 스테이지로 이동한다.
                         GameStatus.stage += 1;
@@ -78,7 +78,7 @@ public class SceneControl : MonoBehaviour
                     }
                     break;
                 case STEP.GAMEOVER:
-                    if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.R))
+                    if (Input.GetKeyDown(KeyCode.Space))
                     {
                         // 마우스 버튼이 눌렸으면 GameScene을 다시 읽는다.
                         //SceneManager.LoadScene("IngameScene");
@@ -162,7 +162,7 @@ public class SceneControl : MonoBehaviour
                 GUI.Label(new Rect(pos_x, pos_y, 300, 20),
                 "빨리 이 지긋지긋한 행성에서 탈출하자!");
                 GUI.Label(new Rect(pos_x, pos_y + 100, 300, 20),
-                "다음 스테이지 이동 : 좌클릭/R", guistyle);
+                "다음 스테이지 이동 : Space", guistyle);
 
                 break;
             case STEP.GAMEOVER:
@@ -171,7 +171,7 @@ public class SceneControl : MonoBehaviour
                 GUI.Label(new Rect(pos_x, pos_y, 200, 20),
                 "게임 오버", guistyle);
                 GUI.Label(new Rect(pos_x, pos_y + 100, 200, 20),
-                "다시하기 : 좌클릭/R", guistyle);
+                "다시하기 : Space", guistyle);
                 GUI.Label(new Rect(pos_x, pos_y + 180, 200, 20),
                 "타이들로 돌아가기 : ESC", guistyle);
                 break;

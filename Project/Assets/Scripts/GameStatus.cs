@@ -8,14 +8,14 @@ public class GameStatus : MonoBehaviour
     public static int stage;
 
     // 철광석, 식물을 사용했을 때 각각의 수리 정도.
-    public static float[] GAIN_REPAIRMENT_IRON = new float[3] { 0.5f, 0.4f, 0.4f };
-    public static float[] GAIN_REPAIRMENT_PLANT = new float[3] { 0.15f, 0.15f, 0.2f };
+    public static float[] GAIN_REPAIRMENT_IRON = new float[3] { 0.4f, 0.4f, 0.3f };
+    public static float[] GAIN_REPAIRMENT_PLANT = new float[3] { 0.05f, 0.05f, 0.02f };
 
     // 적의 우주선 손상 대미지
-    public static float[] DAMAGEENEMY = new float[3] { 0.01f, 0.02f, 0.02f };
+    public static float[] DAMAGEENEMY = new float[3] { 0.01f, 0.02f, 0.01f };
 
     // 철광석, 사과, 식물을 운반했을 때 각각의 체력 소모 정도.
-    public static float[] CONSUME_SATIETY_IRON = new float[3] { 0.05f, 0.05f, 0.05f };
+    public static float[] CONSUME_SATIETY_IRON = new float[3] { 0.02f, 0.03f, 0.04f };
     public static float[] CONSUME_SATIETY_APPLE = new float[3] { 0.02f, 0.02f, 0.02f };
     public static float[] CONSUME_SATIETY_PLANT = new float[3] { 0.01f, 0.01f, 0.01f };
 
@@ -23,8 +23,8 @@ public class GameStatus : MonoBehaviour
     public static float[] CONSUME_SATIETY_ALWAYS = new float[3] { 0.01f, 0.01f, 0.01f };
 
     // 사과, 식물을 먹었을 때 각각의 체력 회복 정도.
-    public static float[] REGAIN_SATIETY_APPLE = new float[3] { 0.7f, 0.7f, 0.9f };
-    public static float[] REGAIN_SATIETY_PLANT = new float[3] { 0.25f, 0.25f, 0.3f }; // 0.2->0.3
+    public static float[] REGAIN_SATIETY_APPLE = new float[3] { 0.5f, 0.5f, 0.3f };
+    public static float[] REGAIN_SATIETY_PLANT = new float[3] { 0.2f, 0.1f, 0.07f }; // 0.2->0.3
 
     public float repairment = 0.2f; // 우주선의 수리 정도(0.0f~1.0f).
     public float satiety = 1.0f; // 배고픔,체력(0.0f~1.0f).

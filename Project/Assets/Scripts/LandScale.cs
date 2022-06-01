@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class LandScale : MonoBehaviour
 {
-    float startScale = 50f;
+    float startScale = 65f;
     float time;
+    float[] speed;
     GameObject land;
     // Start is called before the first frame update
     void Start()
@@ -13,6 +14,7 @@ public class LandScale : MonoBehaviour
         land = this.gameObject;
         land.transform.localScale = new Vector3(startScale, 1f, startScale);
         time = 0;
+        speed = new float[3] { 0.275f, 0.3f, 0.3f};
     }
 
     // Update is called once per frame
@@ -21,7 +23,7 @@ public class LandScale : MonoBehaviour
         if(this.gameObject.transform.localScale.x >= 0)
         {
             this.gameObject.transform.localScale = new Vector3(startScale - time, 1f, startScale - time);
-            time += Time.deltaTime * 0.2f;
+            time += Time.deltaTime * speed[GameStatus.stage];
         }
     }
 }

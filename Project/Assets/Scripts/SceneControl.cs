@@ -103,10 +103,17 @@ public class SceneControl : MonoBehaviour
                     this.player_control.enabled = false;
                     // 현재의 경과 시간으로 클리어 시간을 갱신.
                     this.clear_time = this.step_timer;
+
+                    // 적 캐릭터 공격 정지
+                    // 적 캐릭터 생성 정지
+
                     break;
                 case STEP.GAMEOVER:
                     // PlayerControl를 제어 불가.
                     this.player_control.enabled = false;
+
+                    // 적 캐릭터 생성 정지
+
                     break;
             }
             this.step_timer = 0.0f;

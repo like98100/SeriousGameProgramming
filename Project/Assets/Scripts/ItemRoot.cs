@@ -46,6 +46,8 @@ public class ItemRoot : MonoBehaviour
     private float respawn_timer_enemy = 0.0f; // 적의 출현 시간.
     private float respawn_timer_tornado = 0.0f; // 토네이도 출현 시간.
 
+    private GameStatus game_status = null;
+
     // 아이템의 종류를 Item.TYPE형으로 반환하는 메소드.
     public Item.TYPE getItemType(GameObject item_go)
     {
@@ -265,6 +267,8 @@ public class ItemRoot : MonoBehaviour
         this.respawnTornadoPoints = new List<Vector3>();
         this.respawnIronPoints = new List<Vector3>();
 
+        this.game_status = this.gameObject.GetComponent<GameStatus>();
+
         hpbarCreatePoint = new Vector2(0, 0);
         enemyNum = 0;
 
@@ -360,8 +364,12 @@ public class ItemRoot : MonoBehaviour
         }
         if(respawn_timer_enemy > RESPAWN_TIME_ENEMY[GameStatus.stage])
         {
-            respawn_timer_enemy = 0f;
-            this.respawnEnemy();    // 적을 출현시킨다.
+            if(!this.game_status.isGameClear() && !this.game_status.isGameOver())
+            {
+                respawn_timer_enemy = 0f;
+                this.respawnEnemy();    // 적을 출현시킨다.
+            }
+
         }
         if(respawn_timer_tornado > RESPAWN_TIME_TORNADO[GameStatus.stage])
         {

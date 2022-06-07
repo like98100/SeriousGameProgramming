@@ -278,10 +278,10 @@ public class PlayerControl : MonoBehaviour
             to_other.Normalize(); // 길이를 1로 하고 방향만 벡터로.
             float dp = Vector3.Dot(heading, to_other); // 양쪽 벡터의 내적을 취득.
             if (dp < Mathf.Cos(45.0f))
-            { // 내적이 45도인 코사인 값 미만이면.
+            { // 내적이 45도->66도인 코사인 값 미만이면.
                 break; // 루프를 빠져나간다.
             }
-            ret = true; // 내적이 45도인 코사인 값 이상이면 정면에 있다.
+            ret = true; // 내적이 45도->66도인 코사인 값 이상이면 정면에 있다.
         } while (false);
         return (ret);
     }

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class EnemyControl : MonoBehaviour
 {
+    private GameStatus game_status = null;
+
     public static float ENEMY_MOVED_SPEED = 2.0f;
     public static float SLOW_MOVESPEED = 0.3f; // 이동 속도 감소 퍼센테이지
 
@@ -37,6 +39,8 @@ public class EnemyControl : MonoBehaviour
         this.Maxhp = new float[3] { 0.5f, 1.0f, 1.5f };
         this.hp = Maxhp[GameStatus.stage];
         hpbar = GameObject.Find("Canvas/" + this.gameObject.name + "HP");
+
+        this.game_status = GameObject.Find("GameRoot").GetComponent<GameStatus>();
     }
 
     private void moveControl()
@@ -125,15 +129,19 @@ public class EnemyControl : MonoBehaviour
         }
 
         // 각 상황에서 반복
-        switch(this.step)
+        if (!this.game_status.isGameClear() && !this.game_status.isGameOver())
         {
-            case STEP.MOVE:
-                this.moveControl();
-                break;
-            case STEP.ATTACK:
-                this.attackControl();
-                break;
+            switch (this.step)
+            {
+                case STEP.MOVE:
+                    this.moveControl();
+                    break;
+                case STEP.ATTACK:
+                    this.attackControl();
+                    break;
+            }
         }
+
 
         // Hp Bar Tracking
         hpbar.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 1.5f, 0));

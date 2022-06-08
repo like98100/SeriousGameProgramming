@@ -9,7 +9,7 @@ public class EnemyControl : MonoBehaviour
     private GameStatus game_status = null;
 
     public static float ENEMY_MOVED_SPEED = 2.0f;
-    public static float SLOW_MOVESPEED = 0.3f; // 이동 속도 감소 퍼센테이지
+    public static float SLOW_MOVESPEED = 0.25f; // 이동 속도 감소 퍼센테이지
 
     float[] Maxhp;
     public float hp;
@@ -45,6 +45,8 @@ public class EnemyControl : MonoBehaviour
 
     private void moveControl()
     {
+        if (this.game_status.isGameClear() || this.game_status.isGameOver()) return;
+
         Vector3 moveVector = Vector3.zero;          // 이동용 벡터
         Vector3 position = this.transform.position; // 현재 위치 보관
         
@@ -70,6 +72,8 @@ public class EnemyControl : MonoBehaviour
 
     private void attackControl()
     {
+        if (this.game_status.isGameClear() || this.game_status.isGameOver()) return;
+
         do
         {
             if (!this.gameObject.transform.GetChild(1).gameObject.GetComponent<WeaponControl>().GetAttack())
@@ -129,8 +133,6 @@ public class EnemyControl : MonoBehaviour
         }
 
         // 각 상황에서 반복
-        if (!this.game_status.isGameClear() && !this.game_status.isGameOver())
-        {
             switch (this.step)
             {
                 case STEP.MOVE:
@@ -140,7 +142,6 @@ public class EnemyControl : MonoBehaviour
                     this.attackControl();
                     break;
             }
-        }
 
 
         // Hp Bar Tracking

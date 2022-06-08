@@ -14,7 +14,7 @@ public class LandScale : MonoBehaviour
         land = this.gameObject;
         land.transform.localScale = new Vector3(startScale, 1f, startScale);
         time = 0;
-        speed = new float[3] { 0.275f, 0.3f, 0.3f};
+        speed = new float[3] { 0.225f, 0.25f, 0.255f};
     }
 
     // Update is called once per frame

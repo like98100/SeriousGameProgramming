@@ -33,6 +33,11 @@ public class Menual : MonoBehaviour
         SetMenualArray();
     }
 
+    public bool GetMenual()
+    {
+        return this.isMenual;
+    }
+
     public void SetMenual()
     {
         this.isMenual = !this.isMenual;
@@ -40,7 +45,7 @@ public class Menual : MonoBehaviour
 
     void SetMenualArray()
     {
-        for(int idx = 0; idx < 3; idx++)
+        for(int idx = 0; idx < 4; idx++)
         {
             if(idx == flag) menualArray.transform.GetChild(idx).gameObject.SetActive(true);
             else menualArray.transform.GetChild(idx).gameObject.SetActive(false);

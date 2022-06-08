@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class TornadoContorl : MonoBehaviour
 {
+    private GameStatus game_status = null;
+
+
     public static float TORNADO_MOVED_SPEED = 2.75f;
-    public static float TORNADO_EXISTED_TIME = 15.0f;
+    public static float TORNADO_EXISTED_TIME = 17.5f;
     GameObject target;
     Vector3 targetVector;
     GameStatus gameStatus;
@@ -29,10 +32,13 @@ public class TornadoContorl : MonoBehaviour
         hitEffect = Resources.Load<GameObject>("Prefabs/HitEffect");
         hitSound = gameObject.GetComponent<AudioSource>();
         player = GameObject.FindWithTag("Player");
+        this.game_status = GameObject.Find("GameRoot").GetComponent<GameStatus>();
     }
 
     void moveToTarget()
     {
+        if (this.game_status.isGameClear() || this.game_status.isGameOver()) return;
+
         Vector3 moveVector = Vector3.zero;
         Vector3 position = this.transform.position;
 
@@ -60,14 +66,19 @@ public class TornadoContorl : MonoBehaviour
         moveToTarget();
         if(isBorder)
         {
-            dotTime += Time.deltaTime;
-            if(dotTime >= dotCooldown)
+            if (this.game_status.isGameClear() || this.game_status.isGameOver()) { }
+            else
             {
-                particleInst = Instantiate(hitEffect, player.transform.position, player.transform.rotation);
-                SoundControl.SetSound(hitSound, "MP_Realistic Punch");
-                this.gameStatus.addSatiety(-0.02f);
-                dotTime = 0f;
+                dotTime += Time.deltaTime;
+                if (dotTime >= dotCooldown)
+                {
+                    particleInst = Instantiate(hitEffect, player.transform.position, player.transform.rotation);
+                    SoundControl.SetSound(hitSound, "MP_Realistic Punch");
+                    this.gameStatus.addSatiety(-0.02f);
+                    dotTime = 0f;
+                }
             }
+           
         }
 
         if (existTime >= TORNADO_EXISTED_TIME) Destroy(this.gameObject);
@@ -75,6 +86,7 @@ public class TornadoContorl : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         if (other.tag == "Player") this.isBorder = true;
         else if (other.tag == "Tornado")
         {

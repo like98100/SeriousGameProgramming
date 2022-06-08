@@ -33,9 +33,9 @@ public class ItemRoot : MonoBehaviour
     public float step_timer = 0.0f;
     public static float[] RESPAWN_TIME_APPLE = new float[3] { 15.0f, 17.0f, 20.0f }; // 사과 출현 시간 상수.
     public static float[] RESPAWN_TIME_IRON = new float[3] { 10.0f, 10.0f, 12.5f }; // 철광석 출현 시간 상수.
-    public static float[] RESPAWN_TIME_PLANT = new float[3] { 1.0f, 2.5f, 5.0f }; // 식물 출현 시간 상수.
+    public static float[] RESPAWN_TIME_PLANT = new float[3] { 1.2f, 2.5f, 3.0f }; // 식물 출현 시간 상수.
 
-    public static float[] RESPAWN_TIME_ENEMY = new float[3] { 4.0f, 5.0f, 5.5f }; // 적 출현 시간 상수.
+    public static float[] RESPAWN_TIME_ENEMY = new float[3] { 4.0f, 5.0f, 6.5f }; // 적 출현 시간 상수.
 
     public static float[] RESPAWN_TIME_TORNADO = new float[3] { 300.0f, 7.5f, 10.0f};  //토네이도 출현 시간 상수
 
@@ -112,8 +112,8 @@ public class ItemRoot : MonoBehaviour
             Vector3 pos = this.respawn_points[n];
             // 출현 위치를 조정.
             pos.y = 1.0f;
-            pos.x += Random.Range(-1.0f, 1.0f);
-            pos.z += Random.Range(-1.0f, 1.0f);
+            pos.x += Random.Range(-5.0f, 5.0f);
+            pos.z += Random.Range(-5.0f, 5.0f);
             // 식물의 위치를 이동.
             go.transform.position = pos;
         }

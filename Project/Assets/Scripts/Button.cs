@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class Button : MonoBehaviour
 {
+    Scene curScene;
+    string root;
     private void Start()
     {
+        curScene = SceneManager.GetActiveScene();
+        if (curScene.name == "IngameScene") root = "GameRoot";
+        else root = "GameSystem";
     }
     public void StartGame()
     {
@@ -23,24 +28,24 @@ public class Button : MonoBehaviour
     public void MenualActivate()
     {
         Debug.Log("메뉴얼");
-        GameObject.Find("GameSystem").GetComponent<Menual>().SetMenual();
+        GameObject.Find(root).GetComponent<Menual>().SetMenual();
     }
 
     public void GoPreMenual()
     {
-        int idx = GameObject.Find("GameSystem").GetComponent<Menual>().GetFlag();
+        int idx = GameObject.Find(root).GetComponent<Menual>().GetFlag();
 
-        if (idx > 0) GameObject.Find("GameSystem").GetComponent<Menual>().SetFlag(false);
-        Debug.Log(GameObject.Find("GameSystem").GetComponent<Menual>().GetFlag());
+        if (idx > 0) GameObject.Find(root).GetComponent<Menual>().SetFlag(false);
+        Debug.Log(GameObject.Find(root).GetComponent<Menual>().GetFlag());
     }
 
     public void GoNextMenual()
     {
         Debug.Log("다음으로");
-        int idx = GameObject.Find("GameSystem").GetComponent<Menual>().GetFlag();
+        int idx = GameObject.Find(root).GetComponent<Menual>().GetFlag();
 
-        if (idx < 2) GameObject.Find("GameSystem").GetComponent<Menual>().SetFlag(true);
-        Debug.Log(GameObject.Find("GameSystem").GetComponent<Menual>().GetFlag());
+        if (idx < 3) GameObject.Find(root).GetComponent<Menual>().SetFlag(true);
+        Debug.Log(GameObject.Find(root).GetComponent<Menual>().GetFlag());
     }
 
     private void Update()

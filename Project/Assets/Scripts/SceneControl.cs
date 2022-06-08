@@ -9,6 +9,8 @@ public class SceneControl : MonoBehaviour
     private GameStatus game_status = null;
     private PlayerControl player_control = null;
 
+    private PauseImage pauseImage = null;
+
     // 아래 변수 추가
     private float GAME_OVER_TIME = 60.0f; // 제한시간은 60초.
 
@@ -27,6 +29,17 @@ public class SceneControl : MonoBehaviour
     private float clear_time = 0.0f; // 클리어 시간.
     public GUIStyle guistyle; // 폰트 스타일.
 
+    private float pauseScale = 1.0f;
+
+    public float GetPauseScale()
+    {
+        return pauseScale;
+    }
+
+    public void SetPauseScale(float idx)
+    {
+        pauseScale = idx;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +50,8 @@ public class SceneControl : MonoBehaviour
         this.step = STEP.PLAY;
         this.next_step = STEP.PLAY;
         this.guistyle.fontSize = 64;
+
+        this.pauseImage = this.gameObject.GetComponent<PauseImage>();
     }
 
     // 게임을 클리어했는지 또는 게임 오버인지 판정하고 게임 상태를 전환
@@ -104,19 +119,29 @@ public class SceneControl : MonoBehaviour
                     // 현재의 경과 시간으로 클리어 시간을 갱신.
                     this.clear_time = this.step_timer;
 
-                    // 적 캐릭터 공격 정지
-                    // 적 캐릭터 생성 정지
-
                     break;
                 case STEP.GAMEOVER:
                     // PlayerControl를 제어 불가.
                     this.player_control.enabled = false;
 
-                    // 적 캐릭터 생성 정지
-
                     break;
             }
             this.step_timer = 0.0f;
+        }
+
+        // 각 상황에서 반복할 것----------.
+        switch (this.step)
+        {
+            case STEP.PLAY:
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    Debug.Log("일시정지");
+                    if (GetPauseScale() == 1.0f) SetPauseScale(0);
+                    else SetPauseScale(1.0f);
+
+                    this.pauseImage.SetPauseImage(GetPauseScale());
+                }
+                    break;
         }
 
     }

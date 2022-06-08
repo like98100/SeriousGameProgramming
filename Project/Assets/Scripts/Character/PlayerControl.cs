@@ -213,7 +213,7 @@ public class PlayerControl : MonoBehaviour
             string message =
             this.event_root.getIgnitableMessage(this.closest_event);
             GUI.Label(new Rect(x + 200.0f, y, 200.0f, 20.0f),
-            "I:" + message, guistyle);
+            "X:" + message, guistyle);
         }
 
     }
@@ -413,6 +413,42 @@ public class PlayerControl : MonoBehaviour
                     {
                         this.next_step = STEP.MOVE;
                     }
+
+                    // 주목하는 이벤트가 있을 때.
+                    if (this.closest_event != null)
+                    {
+                        if (!this.is_event_ignitable())
+                        { // 이벤트를 시작할 수 없으면.
+                            break; // 아무 것도 하지 않는다.
+                        }
+                        // 이벤트 종류를 가져온다.
+                        Event.TYPE ignitable_event =
+                        this.event_root.getEventType(this.closest_event);
+                        switch (ignitable_event)
+                        {
+                            case Event.TYPE.ROCKET: // 이벤트의 종류가 ROCKET이면.
+                                                    // REPAIRING(수리) 상태로 이행.
+                                this.next_step = STEP.REPAIRING;
+                                break;
+                        }
+                        break;
+                    }
+
+                    if (this.carried_item != null)
+                    {
+                        // 가지고 있는 아이템 판별.
+                        Item.TYPE carried_item_type =
+                        this.item_root.getItemType(this.carried_item);
+                        switch (carried_item_type)
+                        {
+                            case Item.TYPE.APPLE: // 사과라면.
+                            case Item.TYPE.PLANT: // 식물이라면.
+                                                  // '식사 중' 상태로 이행.
+                                this.next_step = STEP.EATING;
+                                break;
+                        }
+                    }
+
                     break;
             }
         }
